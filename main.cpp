@@ -19,6 +19,7 @@ void find_goat(list<Goat> trip);
 void check_goat_age(list<Goat> trip);
 void display_goats_algorithm(list<Goat> trip);
 void calculate_total_age(list<Goat> trip);
+void change_goat_color(list<Goat> &trip);
 
 int main() {
     srand(time(0));
@@ -51,7 +52,7 @@ int main() {
     
     // Goat Manager 3001 Engine
     int sel = main_menu();
-    while (sel != 8) {
+    while (sel != 9) {
         switch (sel) {
             case 1:
                 cout << "Adding a goat.\n";
@@ -81,6 +82,10 @@ int main() {
                 cout << "Calculating total goat age.\n";
                 calculate_total_age(trip);
                 break;
+            case 8:
+                cout << "Changing goat color.\n";
+                change_goat_color(trip);
+                break;
             default:
                 cout << "Invalid selection.\n";
                 break;
@@ -101,11 +106,12 @@ int main_menu() {
     cout << "[5] Check for goats older than an age\n";
     cout << "[6] Display goats using for_each\n";
     cout << "[7] Calculate total age of all goats\n";
-    cout << "[8] Quit\n";
+    cout << "[8] Change goats' color\n";
+    cout << "[9] Quit\n";
     cout << "Choice --> ";
     int choice;
     cin >> choice;
-    while (choice < 1 || choice > 8) {
+    while (choice < 1 || choice > 9) {
         cout << "Invalid, again --> ";
         cin >> choice;
     }
@@ -216,4 +222,38 @@ void calculate_total_age(list<Goat> trip) {
 
     cout << "Total age of all goats: "
          << totalAge << endl;
+}
+
+void change_goat_color(list<Goat> &trip) {
+    string oldColor, newColor;
+
+    cout << "Enter the current color: ";
+    cin >> oldColor;
+
+    cout << "Enter the new color: ";
+    cin >> newColor;
+
+    int changed = count_if(trip.begin(), trip.end(),
+        [oldColor](const Goat& gt) {
+            return gt.get_color() == oldColor;
+        });
+
+    if (changed == 0) {
+        cout << "No goats found with color "
+             << oldColor << ".\n";
+        return;
+    }
+
+    transform(trip.begin(), trip.end(), trip.begin(),
+        [oldColor, newColor](const Goat& gt) {
+            if (gt.get_color() == oldColor) {
+                return Goat(gt.get_name(),
+                            gt.get_age(),
+                            newColor);
+            }
+            return gt;
+        });
+
+    cout << changed << " goat(s) changed from "
+         << oldColor << " to " << newColor << ".\n";
 }
