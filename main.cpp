@@ -22,6 +22,7 @@ void calculate_total_age(list<Goat> trip);
 void change_goat_color(list<Goat> &trip);
 void reverse_goats(list<Goat> &trip);
 void remove_old_goats(list<Goat> &trip);
+void display_goat_ages_in_dog_years(list<Goat> trip);
 
 int main() {
     srand(time(0));
@@ -54,7 +55,7 @@ int main() {
     
     // Goat Manager 3001 Engine
     int sel = main_menu();
-    while (sel != 11) {
+    while (sel != 12) {
         switch (sel) {
             case 1:
                 cout << "Adding a goat.\n";
@@ -96,6 +97,10 @@ int main() {
                 cout << "Removing old goats.\n";
                 remove_old_goats(trip);
                 break;
+            case 11:
+                cout << "Converting goat ages to dog years.\n";
+                display_goat_ages_in_dog_years(trip);
+                break;
             default:
                 cout << "Invalid selection.\n";
                 break;
@@ -119,11 +124,12 @@ int main_menu() {
     cout << "[8] Change goats' color\n";
     cout << "[9] Reverse goat order\n";
     cout << "[10] Remove goats older than an age\n";
-    cout << "[11] Quit\n";
+    cout << "[11] Display ages in dog years\n";
+    cout << "[12] Quit\n";
     cout << "Choice --> ";
     int choice;
     cin >> choice;
-    while (choice < 1 || choice > 11) {
+    while (choice < 1 || choice > 12) {
         cout << "Invalid, again --> ";
         cin >> choice;
     }
@@ -293,4 +299,25 @@ void remove_old_goats(list<Goat> &trip) {
 
     cout << removed << " goat(s) removed.\n";
     cout << "New trip size: " << trip.size() << endl;
+}
+
+
+void display_goat_ages_in_dog_years(list<Goat> trip) {
+    list<int> dogYears;
+
+    transform(trip.begin(), trip.end(),
+        back_inserter(dogYears),
+        [](const Goat& gt) {
+            return gt.get_age() * 5;
+        });
+
+    cout << "Goat ages in dog years:\n";
+
+    auto ageIt = dogYears.begin();
+
+    for (const Goat& gt : trip) {
+        cout << gt.get_name() << ": "
+             << *ageIt << endl;
+        ++ageIt;
+    }
 }
