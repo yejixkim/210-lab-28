@@ -5,6 +5,7 @@
 #include <list>
 #include "Goat.h"
 #include <algorithm>
+#include <numeric>
 using namespace std;
 
 const int SZ_NAMES = 200, SZ_COLORS = 25;
@@ -17,6 +18,7 @@ int main_menu();
 void find_goat(list<Goat> trip);
 void check_goat_age(list<Goat> trip);
 void display_goats_algorithm(list<Goat> trip);
+void calculate_total_age(list<Goat> trip);
 
 int main() {
     srand(time(0));
@@ -49,7 +51,7 @@ int main() {
     
     // Goat Manager 3001 Engine
     int sel = main_menu();
-    while (sel != 7) {
+    while (sel != 8) {
         switch (sel) {
             case 1:
                 cout << "Adding a goat.\n";
@@ -75,6 +77,10 @@ int main() {
                 cout << "Displaying goats using for_each.\n";
                 display_goats_algorithm(trip);
                 break;
+            case 7:
+                cout << "Calculating total goat age.\n";
+                calculate_total_age(trip);
+                break;
             default:
                 cout << "Invalid selection.\n";
                 break;
@@ -94,11 +100,12 @@ int main_menu() {
     cout << "[4] Find a goat by name\n";
     cout << "[5] Check for goats older than an age\n";
     cout << "[6] Display goats using for_each\n";
-    cout << "[7] Quit\n";
+    cout << "[7] Calculate total age of all goats\n";
+    cout << "[8] Quit\n";
     cout << "Choice --> ";
     int choice;
     cin >> choice;
-    while (choice < 1 || choice > 7) {
+    while (choice < 1 || choice > 8) {
         cout << "Invalid, again --> ";
         cin >> choice;
     }
@@ -198,4 +205,15 @@ void display_goats_algorithm(list<Goat> trip) {
                  << " (" << gt.get_age()
                  << ", " << gt.get_color() << ")\n";
         });
+}
+
+void calculate_total_age(list<Goat> trip) {
+    int totalAge = accumulate(
+        trip.begin(), trip.end(), 0,
+        [](int total, const Goat& gt) {
+            return total + gt.get_age();
+        });
+
+    cout << "Total age of all goats: "
+         << totalAge << endl;
 }
