@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <list>
 #include "Goat.h"
+#include <algorithm>
 using namespace std;
 
 const int SZ_NAMES = 200, SZ_COLORS = 25;
@@ -13,6 +14,7 @@ void delete_goat(list<Goat> &trip);
 void add_goat(list<Goat> &trip, string [], string []);
 void display_trip(list<Goat> trip);
 int main_menu();
+void find_goat(list<Goat> trip);
 
 int main() {
     srand(time(0));
@@ -45,7 +47,7 @@ int main() {
     
     // Goat Manager 3001 Engine
     int sel = main_menu();
-    while (sel != 4) {
+    while (sel != 5) {
         switch (sel) {
             case 1:
                 cout << "Adding a goat.\n";
@@ -58,6 +60,10 @@ int main() {
             case 3:    
                 cout << "Displaying goat data.\n";
                 display_trip(trip);
+                break;
+            case 4:
+                cout << "Searching for a goat.\n";
+                find_goat(trip);
                 break;
             default:
                 cout << "Invalid selection.\n";
@@ -75,11 +81,12 @@ int main_menu() {
     cout << "[1] Add a goat\n";
     cout << "[2] Delete a goat\n";
     cout << "[3] List goats\n";
-    cout << "[4] Quit\n";
+    cout << "[4] Find a goat by name\n";
+    cout << "[5] Quit\n";
     cout << "Choice --> ";
     int choice;
     cin >> choice;
-    while (choice < 1 || choice > 4) {
+    while (choice < 1 || choice > 5) {
         cout << "Invalid, again --> ";
         cin >> choice;
     }
@@ -126,4 +133,25 @@ int select_goat(list<Goat> trp) {
         cin >> input;
     }
     return input;
+}
+
+void find_goat(list<Goat> trip) {
+    string searchName;
+
+    cout << "Enter goat name: ";
+    cin >> searchName;
+
+    auto it = find_if(trip.begin(), trip.end(),
+        [searchName](const Goat& gt) {
+            return gt.get_name() == searchName;
+        });
+
+    if (it != trip.end()) {
+        cout << "Found goat: "
+             << it->get_name()
+             << " (" << it->get_age()
+             << ", " << it->get_color() << ")" << endl;
+    } else {
+        cout << searchName << " not found." << endl;
+    }
 }
