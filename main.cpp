@@ -16,6 +16,7 @@ void display_trip(list<Goat> trip);
 int main_menu();
 void find_goat(list<Goat> trip);
 void check_goat_age(list<Goat> trip);
+void display_goats_algorithm(list<Goat> trip);
 
 int main() {
     srand(time(0));
@@ -48,7 +49,7 @@ int main() {
     
     // Goat Manager 3001 Engine
     int sel = main_menu();
-    while (sel != 6) {
+    while (sel != 7) {
         switch (sel) {
             case 1:
                 cout << "Adding a goat.\n";
@@ -66,10 +67,14 @@ int main() {
                 cout << "Searching for a goat.\n";
                 find_goat(trip);
                 break;
-                case 5:
-                    cout << "Checking goat ages.\n";
-                    check_goat_age(trip);
-                    break;
+            case 5:
+                cout << "Checking goat ages.\n";
+                check_goat_age(trip);
+                break;
+            case 6:
+                cout << "Displaying goats using for_each.\n";
+                display_goats_algorithm(trip);
+                break;
             default:
                 cout << "Invalid selection.\n";
                 break;
@@ -88,11 +93,12 @@ int main_menu() {
     cout << "[3] List goats\n";
     cout << "[4] Find a goat by name\n";
     cout << "[5] Check for goats older than an age\n";
-    cout << "[6] Quit\n";
+    cout << "[6] Display goats using for_each\n";
+    cout << "[7] Quit\n";
     cout << "Choice --> ";
     int choice;
     cin >> choice;
-    while (choice < 1 || choice > 6) {
+    while (choice < 1 || choice > 7) {
         cout << "Invalid, again --> ";
         cin >> choice;
     }
@@ -180,4 +186,16 @@ void check_goat_age(list<Goat> trip) {
         cout << "No goats are older than "
              << ageLimit << ".\n";
     }
+}
+
+void display_goats_algorithm(list<Goat> trip) {
+    int i = 1;
+
+    for_each(trip.begin(), trip.end(),
+        [&i](const Goat& gt) {
+            cout << "[" << i++ << "] "
+                 << gt.get_name()
+                 << " (" << gt.get_age()
+                 << ", " << gt.get_color() << ")\n";
+        });
 }
