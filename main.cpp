@@ -21,6 +21,7 @@ void display_goats_algorithm(list<Goat> trip);
 void calculate_total_age(list<Goat> trip);
 void change_goat_color(list<Goat> &trip);
 void reverse_goats(list<Goat> &trip);
+void remove_old_goats(list<Goat> &trip);
 
 int main() {
     srand(time(0));
@@ -53,7 +54,7 @@ int main() {
     
     // Goat Manager 3001 Engine
     int sel = main_menu();
-    while (sel != 10) {
+    while (sel != 11) {
         switch (sel) {
             case 1:
                 cout << "Adding a goat.\n";
@@ -91,6 +92,10 @@ int main() {
                 cout << "Reversing goat order.\n";
                 reverse_goats(trip);
                 break;
+            case 10:
+                cout << "Removing old goats.\n";
+                remove_old_goats(trip);
+                break;
             default:
                 cout << "Invalid selection.\n";
                 break;
@@ -113,11 +118,12 @@ int main_menu() {
     cout << "[7] Calculate total age of all goats\n";
     cout << "[8] Change goats' color\n";
     cout << "[9] Reverse goat order\n";
-    cout << "[10] Quit\n";
+    cout << "[10] Remove goats older than an age\n";
+    cout << "[11] Quit\n";
     cout << "Choice --> ";
     int choice;
     cin >> choice;
-    while (choice < 1 || choice > 10) {
+    while (choice < 1 || choice > 11) {
         cout << "Invalid, again --> ";
         cin >> choice;
     }
@@ -269,4 +275,22 @@ void reverse_goats(list<Goat> &trip) {
 
     cout << "Goat order reversed.\n";
     display_trip(trip);
+}
+
+void remove_old_goats(list<Goat> &trip) {
+    int ageLimit;
+
+    cout << "Remove goats older than what age? ";
+    cin >> ageLimit;
+
+    auto newEnd = remove_if(trip.begin(), trip.end(),
+        [ageLimit](const Goat& gt) {
+            return gt.get_age() > ageLimit;
+        });
+
+    int removed = distance(newEnd, trip.end());
+    trip.erase(newEnd, trip.end());
+
+    cout << removed << " goat(s) removed.\n";
+    cout << "New trip size: " << trip.size() << endl;
 }
