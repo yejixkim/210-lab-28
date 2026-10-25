@@ -20,6 +20,7 @@ void check_goat_age(list<Goat> trip);
 void display_goats_algorithm(list<Goat> trip);
 void calculate_total_age(list<Goat> trip);
 void change_goat_color(list<Goat> &trip);
+void reverse_goats(list<Goat> &trip);
 
 int main() {
     srand(time(0));
@@ -52,7 +53,7 @@ int main() {
     
     // Goat Manager 3001 Engine
     int sel = main_menu();
-    while (sel != 9) {
+    while (sel != 10) {
         switch (sel) {
             case 1:
                 cout << "Adding a goat.\n";
@@ -86,6 +87,10 @@ int main() {
                 cout << "Changing goat color.\n";
                 change_goat_color(trip);
                 break;
+            case 9:
+                cout << "Reversing goat order.\n";
+                reverse_goats(trip);
+                break;
             default:
                 cout << "Invalid selection.\n";
                 break;
@@ -107,11 +112,12 @@ int main_menu() {
     cout << "[6] Display goats using for_each\n";
     cout << "[7] Calculate total age of all goats\n";
     cout << "[8] Change goats' color\n";
-    cout << "[9] Quit\n";
+    cout << "[9] Reverse goat order\n";
+    cout << "[10] Quit\n";
     cout << "Choice --> ";
     int choice;
     cin >> choice;
-    while (choice < 1 || choice > 9) {
+    while (choice < 1 || choice > 10) {
         cout << "Invalid, again --> ";
         cin >> choice;
     }
@@ -256,4 +262,11 @@ void change_goat_color(list<Goat> &trip) {
 
     cout << changed << " goat(s) changed from "
          << oldColor << " to " << newColor << ".\n";
+}
+
+void reverse_goats(list<Goat> &trip) {
+    trip.reverse();
+
+    cout << "Goat order reversed.\n";
+    display_trip(trip);
 }
